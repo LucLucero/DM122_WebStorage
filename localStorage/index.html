@@ -5,7 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HTML5 Storage API</title>
+    <link rel="stylesheet" href="./style/index.css">
 </head>
+
+
 <body>
 
 <!-- 
@@ -13,21 +16,24 @@
 
 
 -->
+    <h1>HTML Storage API</h1>
 
-<h1>HTML Storage API</h1>
-   <fieldset>
+   <fieldset class="form-fieldset" onsubmit="">
+    
     <legend>Key/Value</legend>
-    <label>
-        Key:        
-        <input type="text" name="key">
-    </label>
-    <label>
-        Value:
-        <input type="text" name="Value">
-    </label>
-    <button>
-        Add
-    </button>
+    <form class="form-content">
+        <label>
+            <span>Key:</span>
+            <input type="text" name="key" autofocus>
+        </label>
+        <label>
+            <span>Value:</span>
+            <input type="text" name="Value">
+        </label>
+        <button>
+            Add
+        </button>
+    </form>
 
 
    </fieldset>
