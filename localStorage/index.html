@@ -18,7 +18,7 @@
 -->
     <h1>HTML Storage API</h1>
 
-   <fieldset class="form-fieldset" onsubmit="">
+   <fieldset class="form-fieldset" onsubmit="return confirm('submit?')">
     
     <legend>Key/Value</legend>
     <form class="form-content">
@@ -38,7 +38,12 @@
 
    </fieldset>
 
+    <output>
+        <script>
+            document.write(window.location.href);
+        </script>
 
+    </output>
  
 
     
