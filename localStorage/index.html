@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HTML5 Storage API</title>
     <link rel="stylesheet" href="./style/index.css">
+    <script src="app.js" defer></script>
 </head>
 
 
@@ -18,7 +19,7 @@
 -->
     <h1>HTML Storage API</h1>
 
-   <fieldset class="form-fieldset" onsubmit="return confirm('submit?')">
+   <fieldset class="form-fieldset" >
     
     <legend>Key/Value</legend>
     <form class="form-content">
@@ -30,13 +31,18 @@
             <span>Value:</span>
             <input type="text" name="Value">
         </label>
-        <button>
+        <button type="submit">
             Add
         </button>
     </form>
 
 
    </fieldset>
+
+   <fieldset>
+    <legend>Local Storage Values</legend>
+    <div id="lsValues"></div>
+  </fieldset>
 
     <output>
         <script>
