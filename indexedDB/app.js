@@ -33,11 +33,20 @@ db.on('populate', async () => {
 })
 db.open();
 
+function byName(name){
+           
+    return function searchByName(poke){  //poke é do tipo objeto, retornado no db.pokemon
+        
+        console.log("verificando funcionamento do closure");
+        console.log(poke);           
+        return poke.name.includes(name);
+    }
+}
+//byname = char => searchByName = poke => poke.name.includes(name);
 
-const queryPokemon = await db.pokemon
-    .where('name').equals('Magmar')
-  .toArray();
 
-console.log(queryPokemon[0].name);
+const queryPokemon = await db.pokemon.filter(byName('Gengar')).toArray();
+
+console.log(queryPokemon[0].name);    
 
 
