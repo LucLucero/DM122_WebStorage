@@ -34,8 +34,10 @@ db.on('populate', async () => {
 db.open();
 
 
-//const queryPokemon = await db.pokemon
-//    .where('name').equals('gengar')
-//   .toArray();
+const queryPokemon = await db.pokemon
+    .where('name').equals('Magmar')
+  .toArray();
 
-    
+console.log(queryPokemon[0].name);
+
+
