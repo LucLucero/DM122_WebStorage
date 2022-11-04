@@ -45,8 +45,37 @@ function byName(name){
 //byname = char => searchByName = poke => poke.name.includes(name);
 
 
-const queryPokemon = await db.pokemon.filter(byName('Gengar')).toArray();
+const queryPokemon = await db.pokemon
+//.filter(byName('Gengar'))
+.toArray();
 
 console.log(queryPokemon[0].name);    
 
+const pokeHTML = queryPokemon.map(toHTML).join('');
+document.body.innerHTML = pokeHTML;
+
+
+
+
+function toHTML(poke){
+
+    return `
+    
+    <div>
+        <div class="card" style="border-color: green;">
+            <div class="card-id" style="color: green;">
+                ${poke.id}
+            </div>
+            <div class="card-image">
+                <img src="${poke.profile}">
+            </div>
+            <div class="card-name" style="background-color: green;">
+            ${poke.name}
+            </div>
+    </div>            
+    
+    `
+
+
+}
 
