@@ -17,15 +17,15 @@ db.on('populate', async () => {
     await db.pokemon.bulkPut([
     
         {name: "Venusaur",
-        profile: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png"
+        profile: await downloadAndStoreImage("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png")
         },
     
         {name: "Gengar",
-        profile: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/94.png"
+        profile: await downloadAndStoreImage( "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/94.png")
         },
     
         {name: "Magmar",
-        profile: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/126.png"
+        profile: await downloadAndStoreImage("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/126.png")
         },
     
     ]);
@@ -49,6 +49,22 @@ const queryPokemon = await db.pokemon
 //.filter(byName('Gengar'))
 .toArray();
 
+/* FUNÇÃO PARA SEARCH PODE SER FEITO DESSA FORMA
+function SearchByName(name){
+           
+    return function searchByName(poke){  //poke é do tipo objeto, retornado no db.pokemon
+        
+        console.log("verificando funcionamento do closure");
+        console.log(poke);           
+        return poke.name.includes(name);
+    }
+
+const queryPokemon = await db.pokemon
+.where("name")
+.filter(SearchByName()) //ou input.value
+.toArray();
+*/
+
 console.log(queryPokemon[0].name);    
 
 const pokeHTML = queryPokemon.map(toHTML).join('');
@@ -67,7 +83,7 @@ function toHTML(poke){
                 ${poke.id}
             </div>
             <div class="card-image">
-                <img src="${poke.profile}">
+                <img src="${URL.createObjectURL(poke.profile)}">
             </div>
             <div class="card-name" style="background-color: green;">
             ${poke.name}
@@ -78,4 +94,14 @@ function toHTML(poke){
 
 
 }
+
+async function downloadAndStoreImage(imageURL){
+
+    const response = await fetch(imageURL);
+    const blob = await response.blob();
+    //Store the binary data in indexedDB:
+    return blob
+}
+
+
 
