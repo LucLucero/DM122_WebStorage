@@ -31,7 +31,7 @@ db.on('populate', async () => {
         },
     
     ]);
-    
+    retrieveData();
 })
 db.open();
 
@@ -51,53 +51,57 @@ function byName(name){
 //byname = char => searchByName = poke => poke.name.includes(name);
 
 
-const queryPokemon = await db.pokemon
-//.filter(byName('Gengar'))
-.toArray();
-
-/* FUNÇÃO PARA SEARCH PODE SER FEITO DESSA FORMA
-function SearchByName(name){
-           
-    return function searchByName(poke){  //poke é do tipo objeto, retornado no db.pokemon
+async function retrieveData() {
+    const queryPokemon = await db.pokemon
+    //.filter(byName('Gengar'))
+    .toArray();
+    
+    /* FUNÇÃO PARA SEARCH PODE SER FEITO DESSA FORMA
+    function SearchByName(name){
+               
+        return function searchByName(poke){  //poke é do tipo objeto, retornado no db.pokemon
+            
+            console.log("verificando funcionamento do closure");
+            console.log(poke);           
+            return poke.name.includes(name);
+        }
+    
+    const queryPokemon = await db.pokemon
+    .where("name")
+    .filter(SearchByName()) //ou input.value
+    .toArray();
+    */
+    
+    //console.log(queryPokemon[0].name);    
+    //map roda a função para cada elemento do array
+    
+    const pokeHTML = queryPokemon.map(toHTML).join('');
+    const section = document.getElementById('section');
+    section.innerHTML = pokeHTML;
+    document.body.appendChild(section);
+    
+    function toHTML(poke){
+    
+        return `
         
-        console.log("verificando funcionamento do closure");
-        console.log(poke);           
-        return poke.name.includes(name);
+        <div>
+            <div class="card" style="border-color: green;">
+                <div class="card-id" style="color: green;">
+                    ${poke.id}
+                </div>
+                <div class="card-image">
+                    <img src="${URL.createObjectURL(poke.profile)}">
+                </div>
+                <div class="card-name" style="background-color: green;">
+                ${poke.name}
+                </div>
+        </div>            
+        
+        `
     }
-
-const queryPokemon = await db.pokemon
-.where("name")
-.filter(SearchByName()) //ou input.value
-.toArray();
-*/
-
-//console.log(queryPokemon[0].name);    
-//map roda a função para cada elemento do array
-
-const pokeHTML = queryPokemon.map(toHTML).join('');
-const section = document.getElementById('section');
-section.innerHTML = pokeHTML;
-document.body.appendChild(section);
-
-function toHTML(poke){
-
-    return `
-    
-    <div>
-        <div class="card" style="border-color: green;">
-            <div class="card-id" style="color: green;">
-                ${poke.id}
-            </div>
-            <div class="card-image">
-                <img src="${URL.createObjectURL(poke.profile)}">
-            </div>
-            <div class="card-name" style="background-color: green;">
-            ${poke.name}
-            </div>
-    </div>            
-    
-    `
 }
+
+
 
 
 async function downloadImage(imageURL){
@@ -117,9 +121,9 @@ async function saveFormData(event){
         name: form.pokeName.value,
         pokeNumber: form.pokeNumber.value,
 
-    }) 
-    form.reset();
-    location.reload();
+    })
+    retrieveData();
+    form.reset();    
     return false;
 
 }
