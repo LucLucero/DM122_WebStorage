@@ -1,37 +1,43 @@
 import Dexie from "https://cdn.jsdelivr.net/npm/dexie@3.0.3/dist/dexie.mjs";
 
+//criando o banco
 const db = new Dexie('pokemonDB');
 
 //table = store
-
+//criando a store
 db.version(1).stores({
 
+    //botar os indexes que eu mais pesquiso
     pokemon: "++id, name",
 
 
 });
 
-
+//db.on('populate',async () =>) serve para criar o banco apenas uma vez
 db.on('populate', async () => {
 
     await db.pokemon.bulkPut([
     
         {name: "Venusaur",
-        profile: await downloadAndStoreImage("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png")
+        profile: await downloadImage(buildURL(3))
         },
     
         {name: "Gengar",
-        profile: await downloadAndStoreImage( "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/94.png")
+        profile: await downloadImage( buildURL(94))
         },
     
         {name: "Magmar",
-        profile: await downloadAndStoreImage("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/126.png")
+        profile: await downloadImage(buildURL(126))
         },
     
     ]);
     
 })
 db.open();
+
+function buildURL(pokeNumber) {
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeNumber}.png`;
+}
 
 function byName(name){
            
@@ -65,13 +71,11 @@ const queryPokemon = await db.pokemon
 .toArray();
 */
 
-console.log(queryPokemon[0].name);    
+//console.log(queryPokemon[0].name);    
+//map roda a função para cada elemento do array
 
 const pokeHTML = queryPokemon.map(toHTML).join('');
 document.body.innerHTML = pokeHTML;
-
-
-
 
 function toHTML(poke){
 
@@ -91,11 +95,10 @@ function toHTML(poke){
     </div>            
     
     `
-
-
 }
 
-async function downloadAndStoreImage(imageURL){
+
+async function downloadImage(imageURL){
 
     const response = await fetch(imageURL);
     const blob = await response.blob();
