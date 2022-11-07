@@ -75,7 +75,9 @@ const queryPokemon = await db.pokemon
 //map roda a função para cada elemento do array
 
 const pokeHTML = queryPokemon.map(toHTML).join('');
-document.body.innerHTML = pokeHTML;
+const section = document.getElementById('section');
+section.innerHTML = pokeHTML;
+document.body.appendChild(section);
 
 function toHTML(poke){
 
@@ -106,5 +108,16 @@ async function downloadImage(imageURL){
     return blob
 }
 
+function saveFormData(event){
+
+    event.preventDefault();
+    const form = event.target;
+    console.log(form.pokeName.value);
+    console.log(form.pokeNumber.value);    
+    return false;
+}
+
+const form = document.querySelector('form');
+form.addEventListener("submit", saveFormData);
 
 
