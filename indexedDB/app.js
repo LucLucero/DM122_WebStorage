@@ -105,16 +105,38 @@ async function downloadImage(imageURL){
     const response = await fetch(imageURL);
     const blob = await response.blob();
     //Store the binary data in indexedDB:
-    return blob
+    return blob;
 }
 
-function saveFormData(event){
+async function saveFormData(event){
 
     event.preventDefault();
     const form = event.target;
-    console.log(form.pokeName.value);
-    console.log(form.pokeNumber.value);    
+    await saveOnDataBase({
+
+        name: form.pokeName.value,
+        pokeNumber: form.pokeNumber.value,
+
+    }) 
+    form.reset();
+    location.reload();
     return false;
+
+}
+
+
+// === -> só é verdade se os operandos são do mesmo tipo e possuem o mesmo valor.
+async function saveOnDataBase({name, pokeNumber}){
+
+    const pokemon = await db.pokemon.where('name').equals(name).toArray();
+    if (pokemon.length === 0) {
+
+        await db.pokemon.add({
+            name,
+            profile:await downloadImage(buildURL(pokeNumber)),
+        });
+    
+    }
 }
 
 const form = document.querySelector('form');
