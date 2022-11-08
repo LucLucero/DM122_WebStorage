@@ -104,6 +104,7 @@ async function retrieveData() {
 
 
 
+retrieveData();
 async function downloadImage(imageURL){
 
     const response = await fetch(imageURL);
@@ -122,26 +123,27 @@ async function saveFormData(event){
         pokeNumber: form.pokeNumber.value,
 
     })
-    retrieveData();
+    retrieveData();                                            
     form.reset();    
     return false;
-
+    
 }
 
 
 // === -> só é verdade se os operandos são do mesmo tipo e possuem o mesmo valor.
 async function saveOnDataBase({name, pokeNumber}){
-
+    
     const pokemon = await db.pokemon.where('name').equals(name).toArray();
     if (pokemon.length === 0) {
-
+        
         await db.pokemon.add({
             name,
             profile:await downloadImage(buildURL(pokeNumber)),
         });
-    
+        
     }
 }
+
 
 const form = document.querySelector('form');
 form.addEventListener("submit", saveFormData);
