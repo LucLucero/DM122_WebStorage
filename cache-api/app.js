@@ -9,35 +9,33 @@ async function addToCache(requestURL, response){
 
 async function fetchFromNetwork (requestURL){
 
-    const response = await fetch(requestURL)
+    const response = await fetch(requestURL);
     addToCache(requestURL, response.clone());
-    const json = await response.json();
-    return json;
+    return response;
 
 }
-
 
 async function fetchFromCache(requestURL){
 
     const cache = await caches.open(CACHE_KEY);
     const cachedResponse = await cache.match(requestURL);
-    const pokeData = cachedResponse?.json();
-    return pokeData;
-    
+    return cachedResponse || null;
 }
 
 
 async function showPokeData() {
-
+    
     const img = document.querySelector('img');
     const details = document.querySelector('details');
     const pre = document.querySelector('pre');
-    const requestURL = "https://pokeapi.co/api/v2/pokemon/282"
-    const pokeData = 
+    const requestURL = "https://pokeapi.co/api/v2/pokemon/753";
+    const pokeDataResponse = 
         (await fetchFromCache(requestURL)) || (await fetchFromNetwork(requestURL));
+    const pokeData = await pokeDataResponse.json();
     pre.textContent = JSON.stringify(pokeData,null,2);   
     img.src = pokeData.sprites.other['official-artwork'].front_default;
-    img.alt = pokeData.name;    
+    img.alt = pokeData.name;
     img.title = pokeData.name;
     details.hidden = false;
 }
+s
